@@ -1,0 +1,51 @@
+version: '3.1'
+
+services:
+    app:
+        image: keymetrics/pm2
+        container_name: pm2
+        volumes: 
+            - .:/app
+        ports:
+            - "3000:3000"
+        networks: 
+            - api_network
+# then add a process.yml
+# http://pm2.keymetrics.io/docs/usage/docker-pm2-nodejs/
+    mariadb:
+        image: mariadb
+        container_name: mariadb
+        environment: 
+            - MYSQL_ROOT_PASSWORD=abbcccdddd
+            - MYSQL_USER=zishane
+            - MYSQL_PASSWORD=room3506ITAC
+            - MYSQL_DATABASE=TestProjectDB
+        volumes:
+            - ../docker/maria_db/data:/var/lib/mysql
+        ports:
+            - "3306:3306"
+        networks: 
+            - api_network
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: phpmyadmin
+        environment: 
+            - PMA_HOST=mariadb
+            # for default login
+            # - PMA_USER=root
+            # - PMA_PASSWORD=abbcccdddd
+        depends_on:
+            - mariadb
+        volumes:
+            - ../docker/phpmyadmin/sessions:/sessions
+            - ../docker/phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
+            - ../docker/phpmyadmin/theme:/www/themes/theme/
+        ports:
+            - 8080:80
+        networks: 
+            - api_network
+
+networks: 
+    api_network:
+        driver: "bridge"

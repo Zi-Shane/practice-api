@@ -26,5 +26,10 @@ module.exports = {
     return knex("offices")
       .insert(office)
       .then(build);
+  },
+  update_office(condition, new_data) {
+    return knex("offices")
+      .where(condition)
+      .update(new_data)
   }
 };

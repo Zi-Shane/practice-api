@@ -11,5 +11,11 @@
     "express": "^4.16.2",
     "knex": "^0.13.0",
     "mysql": "^2.15.0"
+  },
+  "scripts": {
+    "start": "docker-compose -f ../docker-compose.yml up -d",
+    "stop": "docker-compose down",
+    "log": "docker exec -it pm2 pm2 logs",
+    "monit": "docker exec -it pm2 pm2 monit APP"
   }
 }
